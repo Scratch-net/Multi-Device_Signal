@@ -127,12 +127,7 @@ message RatchetDynamicMulticastMessageRevokeStructure {
      optional bytes secretRatchetKey                    = 1;
 }
 
-//message RatchetDynamicMulticastTagStructure {
-//    optional bytes macKey                      = 1;
-//    repeated bytes allEphemeralPublicKey       = 2;
-//}
 
-//en fait pourrait se servir du EncStructure.
 message RatchetDynamicMulticastAddStructure {
     optional bytes macKey                      = 1;
     optional bytes tag                         = 2;

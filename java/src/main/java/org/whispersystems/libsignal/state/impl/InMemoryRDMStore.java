@@ -377,7 +377,7 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
                     byte[] bytes = decrypt(msg, sessionRecord);
                     StorageProtos.RatchetDynamicMulticastAddStructure rdmm;
                     rdmm = StorageProtos.RatchetDynamicMulticastAddStructure.parseFrom(bytes);
-                    //recupère le tag
+                   
                     byte[] tag = rdmm.getTag().toByteArray();
                     //get newMAcKey
                     ByteString new_mac_key = rdmm.getMacKey();
@@ -425,17 +425,17 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
         SignalProtocolAddress ad = new SignalProtocolAddress(msg.getName(), 1);
         if (msg.getAction() == SignalProtos.RatchetedDynamicMulticastMessage.Action.ENC) {
             try {
-                //recupere les infos de session
+                //get session data
                 SessionRecord sessionRecord = loadSession(ad);
                 byte[] bytes = decrypt(msg, sessionRecord);
                 StorageProtos.RatchetDynamicMulticastEncStructure rdmm;
                 rdmm = StorageProtos.RatchetDynamicMulticastEncStructure.parseFrom(bytes);
-                //recupère le tag
+                //get tag
                 byte[] tag = rdmm.getTag().toByteArray();
                 ByteString new_mac_key = rdmm.getMacKey();
                 verifyMac(msg, sessionRecord, tag, new_mac_key);
 
-                //recupère les ratchet key public et privées
+                //get ratchet keys
                 StorageProtos.RatchetDynamicMulticastMessageStructure message;
                 message = rdmm.getMessage();
 
@@ -447,7 +447,7 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
                 boolean equalsPriv = Arrays.equals(secSigEphemeral.toByteArray(), sessionRecord.getSessionState().getLatestRatchetKeyPrivate());
                 boolean equalsPub = ourNewSigEphemeralPublic.equals(sessionRecord.getSessionState().getSenderRatchetKey());
 
-                //recompose une KeyPair
+
                 ECKeyPair ourNewSigEphemeralKeyPair = new ECKeyPair(ourNewSigEphemeralPublic, ourNewSigEphemeralPrivate);
                 if (!equalsPriv || !equalsPub) {
                     RootKey rootKey = sessionRecord.getSessionState().getRootKey();//FIXME recuperer aussi cle publique
@@ -459,14 +459,12 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
                     sessionRecord.getSessionState().setSenderChain(ourNewSigEphemeralKeyPair, chain.second());
                     sessionRecord.getSessionState().setRatchetCounter(currentState.getRatchetCounter() + 1);
                 }
-                //ajout Celine
-                //fait même maj des chain key/message key que celui qui fait le encrypt Signal
-//                System.out.println("deb dec2, chainkey index =" +  sessionRecord.getSessionState().getSenderChainKey().getIndex());
+                
                 ChainKey chainKey = sessionRecord.getSessionState().getSenderChainKey();
-//                sessionRecord.getSessionState().setSenderChainKey(chainKey.getNextChainKey());//FIXME c'est la le pb, n'enregistre pas l'avancée de l'index des chain key!
-                sessionRecord.getSessionState().setSenderChainKey(chainKey.getNextChainKey());//FIXME c'est la le pb, n'enregistre pas l'avancée de l'index des chain key!
-//                 System.out.println("fin dec2, chainkey index =" +  sessionRecord.getSessionState().getSenderChainKey().getIndex());
-                //fin ajout Céline
+//                sessionRecord.getSessionState().setSenderChainKey(chainKey.getNextChainKey());
+                sessionRecord.getSessionState().setSenderChainKey(chainKey.getNextChainKey());
+//              
+            
 
                 storeSession(ad, sessionRecord);
 
@@ -481,9 +479,9 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
 
     private void verifyMac(SignalProtos.RatchetedDynamicMulticastMessage msg, SessionRecord sessionRecord, byte[] tag, ByteString new_mac_key) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
         SecretKeySpec new_mac_key_practical = new SecretKeySpec(new_mac_key.toByteArray(), "HmacSHA256");
-        //recupère la liste de clés ephémères
+        
         List<ByteString> allEphemeralPublicKey = msg.getPublicKeyList();
-        //verifie le tag
+       
         byte[] macKey = sessionRecord.getSessionState().getMacKey();
         Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
         SecretKeySpec practicalMacKey = new SecretKeySpec(macKey, "HmacSHA256");
@@ -515,7 +513,7 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
                 SessionRecord sessionRecord = new SessionRecord(bytes);
                 List<ByteString> allEphemeralPublicKey = sessionRecord.getSessionState().getAllEphemeralPublicKey();
                 allEphemeralPublicKey.add(ByteString.copyFrom(newDevicePublicKey.getEncoded()));
-                if (getDevicesPublicKeys().size() > 0) {//FIXME initialiser le DevicesPublicKeys avec la clé du device et passer le compteur à 1
+                if (getDevicesPublicKeys().size() > 0) {
                     byte[] msg = add(ad, allEphemeralPublicKey);
                     messages.add(msg);
                 }

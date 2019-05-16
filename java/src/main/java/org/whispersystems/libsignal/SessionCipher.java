@@ -115,7 +115,7 @@ public class SessionCipher {
             }
 
             sessionState.setSenderChainKey(chainKey.getNextChainKey());
-//            System.out.println("fin encrypt, chain key index = "+ sessionState.getSenderChainKey().getIndex());
+
 
             if (!identityKeyStore.isTrustedIdentity(remoteAddress, sessionState.getRemoteIdentityKey(), IdentityKeyStore.Direction.SENDING)) {
                 throw new UntrustedIdentityException(remoteAddress.getName(), sessionState.getRemoteIdentityKey());
@@ -374,14 +374,14 @@ public class SessionCipher {
         getOrCreateChainKey(sessionState);
         sessionState.getLatestReceiverRatchetKey();
         int ratchetCounter = sessionState.getRatchetCounter();
-      //  System.out.println("dans half ratchet RatchetCounter 1 : "+ratchetCounter);
+
         sessionState.setRatchetCounter(ratchetCounter+1);
         sessionStore.storeSession(remoteAddress, sessionRecord);
-       // getOrCreateMessageKeys(sessionState, theirEphemeral, chainKey, 1); deja fait dans encrypt
+
     }
 
 
-    //ajout Celine. Decrypt qui ne fait que l'update de la receiver chain
+    //Decrypt2 updates only the receiver chain
     private byte[] decrypt2(SessionState sessionState, SignalMessage ciphertextMessage)
             throws InvalidMessageException, DuplicateMessageException, LegacyMessageException {
         if (!sessionState.hasSenderChain()) {
@@ -411,7 +411,7 @@ public class SessionCipher {
         return plaintext;
     }
 
-    //encrypt qui fait l'update de la sender chain
+    //encrypt that updates the sender chain
     public CiphertextMessage encrypt2(byte[] paddedMessage) throws UntrustedIdentityException, InvalidMessageException, InvalidKeyException {
         synchronized (SESSION_LOCK) {
             SessionRecord sessionRecord = sessionStore.loadSession(remoteAddress);
@@ -419,7 +419,6 @@ public class SessionCipher {
             int ratchetCounter = sessionState.getRatchetCounter();
             ChainKey chainKey;
             if(ratchetCounter==0) {
-         //       System.out.println("passe dans condition encrypt");
                 chainKey = getOrCreateChainKey(sessionState);
                 //ratchetCounter++;
                 sessionState.setRatchetCounter(1);
@@ -427,7 +426,7 @@ public class SessionCipher {
             else{
                 chainKey = sessionState.getSenderChainKey();
             }
-      //      System.out.println("dans ecnrypt après if RatchetCounter: "+ sessionState.getRatchetCounter());
+
             MessageKeys messageKeys = chainKey.getMessageKeys();
             ECPublicKey senderEphemeral = sessionState.getSenderRatchetKey();
             int previousCounter = sessionState.getPreviousCounter();
@@ -451,7 +450,7 @@ public class SessionCipher {
             }
 
             sessionState.setSenderChainKey(chainKey.getNextChainKey());
-      //      System.out.println("fin encrypt, chain key index = "+ sessionState.getSenderChainKey().getIndex());
+   
 
             if (!identityKeyStore.isTrustedIdentity(remoteAddress, sessionState.getRemoteIdentityKey(), IdentityKeyStore.Direction.SENDING)) {
                 throw new UntrustedIdentityException(remoteAddress.getName(), sessionState.getRemoteIdentityKey());
@@ -463,8 +462,7 @@ public class SessionCipher {
         }
     }
 
-    //ajout Celine 23 avril
-    //reprend le code de getOrCreateCHainKey mais supprime l'update de la senderChain
+    
     /**
      *update only receiverChain (ratchet that does not need to generate new own ephemerals
      **/
