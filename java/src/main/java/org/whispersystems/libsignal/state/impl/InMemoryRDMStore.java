@@ -128,7 +128,6 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
 
 
             // build enc_add_join_msg
-            //ajout celine
             sessionRecord.signalFilterAllStates();
             //fin ajout Céline
             StorageProtos.RatchetDynamicMulticastMessageEncAddJoinStructure enc_add_join_msg;
@@ -223,7 +222,7 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
                 ByteString new_mac_key = rdmenc.getMacKey();
                 verifyMac(msg, currentSessionRecord, tag, new_mac_key);
 
-                //ajoutCeline
+               
                 StorageProtos.SessionStructure.RatchetDynamicMulticastStructure rdms;
                 rdms = currentSessionRecord.getSessionState().getStructure().getRatchetDynamicMulticastStructure();
                 sessionRecord.getSessionState().setRatchetDynamicMulticastStructure(rdms);
@@ -459,14 +458,9 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
                     sessionRecord.getSessionState().setSenderChain(ourNewSigEphemeralKeyPair, chain.second());
                     sessionRecord.getSessionState().setRatchetCounter(currentState.getRatchetCounter() + 1);
                 }
-                //ajout Celine
-                //fait même maj des chain key/message key que celui qui fait le encrypt Signal
-//                System.out.println("deb dec2, chainkey index =" +  sessionRecord.getSessionState().getSenderChainKey().getIndex());
+                
                 ChainKey chainKey = sessionRecord.getSessionState().getSenderChainKey();
-//                sessionRecord.getSessionState().setSenderChainKey(chainKey.getNextChainKey());//FIXME c'est la le pb, n'enregistre pas l'avancée de l'index des chain key!
-                sessionRecord.getSessionState().setSenderChainKey(chainKey.getNextChainKey());//FIXME c'est la le pb, n'enregistre pas l'avancée de l'index des chain key!
-//                 System.out.println("fin dec2, chainkey index =" +  sessionRecord.getSessionState().getSenderChainKey().getIndex());
-                //fin ajout Céline
+                sessionRecord.getSessionState().setSenderChainKey(chainKey.getNextChainKey());
 
                 storeSession(ad, sessionRecord);
 

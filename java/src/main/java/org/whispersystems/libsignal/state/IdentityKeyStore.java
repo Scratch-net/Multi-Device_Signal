@@ -79,6 +79,4 @@ public interface IdentityKeyStore {
    */
   public IdentityKey getIdentity(SignalProtocolAddress address);
 
-
-  public void setIdentityKeyPair(IdentityKeyPair ikp);
 }

@@ -17,7 +17,7 @@ public class InMemoryIdentityKeyStore implements IdentityKeyStore {
 
   private final Map<SignalProtocolAddress, IdentityKey> trustedKeys = new HashMap<>();
 
-  private IdentityKeyPair identityKeyPair; // FIXME add static
+  private final IdentityKeyPair identityKeyPair;
   private final int             localRegistrationId;
 
   public InMemoryIdentityKeyStore(IdentityKeyPair identityKeyPair, int localRegistrationId) {
@@ -56,10 +56,5 @@ public class InMemoryIdentityKeyStore implements IdentityKeyStore {
   @Override
   public IdentityKey getIdentity(SignalProtocolAddress address) {
     return trustedKeys.get(address);
-  }
-
-  @Override
-  public void setIdentityKeyPair(IdentityKeyPair ikp) {
-    this.identityKeyPair = ikp;
   }
 }

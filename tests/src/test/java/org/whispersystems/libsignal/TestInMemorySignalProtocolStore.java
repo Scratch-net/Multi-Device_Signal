@@ -21,5 +21,3 @@ public class TestInMemorySignalProtocolStore extends InMemorySignalProtocolStore
     return KeyHelper.generateRegistrationId(false);
   }
 }
-
-

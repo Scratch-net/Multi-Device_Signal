@@ -5,10 +5,6 @@
  */
 package org.whispersystems.libsignal.state.impl;
 
-import com.google.protobuf.ByteString;
-
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.jce.spec.IEKeySpec;
 import org.whispersystems.libsignal.SignalProtocolAddress;
 import org.whispersystems.libsignal.IdentityKey;
 import org.whispersystems.libsignal.IdentityKeyPair;
@@ -17,56 +13,19 @@ import org.whispersystems.libsignal.state.SignalProtocolStore;
 import org.whispersystems.libsignal.state.PreKeyRecord;
 import org.whispersystems.libsignal.state.SessionRecord;
 import org.whispersystems.libsignal.state.SignedPreKeyRecord;
-import org.whispersystems.libsignal.state.StorageProtos;
 
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
-import java.security.*;
-import java.security.spec.ECGenParameterSpec;
 import java.util.List;
-import java.util.Map;
 
 public class InMemorySignalProtocolStore implements SignalProtocolStore {
 
   private final InMemoryPreKeyStore       preKeyStore       = new InMemoryPreKeyStore();
   private final InMemorySessionStore      sessionStore      = new InMemorySessionStore();
   private final InMemorySignedPreKeyStore signedPreKeyStore = new InMemorySignedPreKeyStore();
-  private InMemoryIdentityKeyStore  identityKeyStore;
 
-  private InMemoryDeviceKeyStore deviceStore = new InMemoryDeviceKeyStore();
+  private final InMemoryIdentityKeyStore  identityKeyStore;
 
   public InMemorySignalProtocolStore(IdentityKeyPair identityKeyPair, int registrationId) {
     this.identityKeyStore = new InMemoryIdentityKeyStore(identityKeyPair, registrationId);
-    setupDeviceKeys();
-  }
-
-  public InMemorySignalProtocolStore() {
-    setupDeviceKeys();
-  }
-
-  private void setupDeviceKeys() {
-    Security.addProvider(new BouncyCastleProvider());
-    KeyPairGenerator keyGen = null;
-    try {
-      keyGen = KeyPairGenerator.getInstance("EC", BouncyCastleProvider.PROVIDER_NAME);
-      keyGen.initialize(new ECGenParameterSpec("secp256r1"));
-      KeyPair keyPair = keyGen.generateKeyPair();
-
-//      KeyPairGenerator kpg = KeyPairGenerator.getInstance("ECIES");
-//      kpg.initialize(new ECGenParameterSpec("secp256r1"));
-//      KeyPair keyPair = kpg.generateKeyPair();
-//
-//      Cipher cipher = Cipher.getInstance("ECIES");
-//      cipher.init(Cipher.ENCRYPT_MODE, keyPair.getPublic());
-
-//      Cipher cipher = Cipher.getInstance("ECIES", BouncyCastleProvider.PROVIDER_NAME);
-//      cipher.init(Cipher.ENCRYPT_MODE, new IEKeySpec(keyPair.getPrivate(), keyPair.getPublic()));
-
-
-      deviceStore = new InMemoryDeviceKeyStore(keyPair);
-    } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException | NoSuchProviderException e) {
-      e.printStackTrace(); //FIXME
-    }
   }
 
   @Override
@@ -94,12 +53,7 @@ public class InMemorySignalProtocolStore implements SignalProtocolStore {
     return identityKeyStore.getIdentity(address);
   }
 
-    @Override
-    public void setIdentityKeyPair(IdentityKeyPair ikp) {
-        this.identityKeyStore.setIdentityKeyPair(ikp);
-    }
-
-    @Override
+  @Override
   public PreKeyRecord loadPreKey(int preKeyId) throws InvalidKeyIdException {
     return preKeyStore.loadPreKey(preKeyId);
   }
@@ -150,36 +104,6 @@ public class InMemorySignalProtocolStore implements SignalProtocolStore {
   }
 
   @Override
-  public void load(byte[] allsessions) {
-    sessionStore.load(allsessions);
-  }
-
-    @Override
-    public Map<SignalProtocolAddress, byte[]> getAllSessions() {
-        return sessionStore.getAllSessions();
-    }
-
-    @Override
-  public byte[] dumpSessions(boolean keepRDM) {
-    return sessionStore.dumpSessions(keepRDM);
-  }
-
-    @Override
-    public void updateAllEphemeralPubKey(PublicKey newDevicePublicKey) {
-        sessionStore.updateAllEphemeralPubKey(newDevicePublicKey);
-    }
-
-    @Override
-    public void setOwnEphemeralKeys(PrivateKey devicePrivateKey, PublicKey devicePublicKey) {
-        sessionStore.setOwnEphemeralKeys(devicePrivateKey, devicePublicKey);
-    }
-
-    @Override
-  public List<StorageProtos.SignedPreKeyRecordStructure> dumpSignedPreKey() {
-    return signedPreKeyStore.dumpSignedPreKey();
-  }
-
-  @Override
   public SignedPreKeyRecord loadSignedPreKey(int signedPreKeyId) throws InvalidKeyIdException {
     return signedPreKeyStore.loadSignedPreKey(signedPreKeyId);
   }
@@ -203,25 +127,4 @@ public class InMemorySignalProtocolStore implements SignalProtocolStore {
   public void removeSignedPreKey(int signedPreKeyId) {
     signedPreKeyStore.removeSignedPreKey(signedPreKeyId);
   }
-
-  @Override
-  public PublicKey getDevicePublicKey() {
-    return deviceStore.getDevicePublicKey();
-  }
-
-  @Override
-  public PrivateKey getDevicePrivateKey() {
-    return deviceStore.getDevicePrivateKey();
-  }
-
-  @Override
-  public void addDeviceKey(PublicKey pk) {
-    deviceStore.addDeviceKey(pk);
-  }
-
-  @Override
-  public List<ByteString> getDevicesPublicKeys() {
-    return deviceStore.getDevicesPublicKeys();
-  }
-
 }
