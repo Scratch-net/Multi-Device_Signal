@@ -70,6 +70,7 @@ public final class SignalProtos {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:textsecure.SignalMessage)
       SignalMessageOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use SignalMessage.newBuilder() to construct.
     private SignalMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -92,6 +93,9 @@ public final class SignalProtos {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -103,13 +107,6 @@ public final class SignalProtos {
             case 0:
               done = true;
               break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
               bitField0_ |= 0x00000001;
               ratchetKey_ = input.readBytes();
@@ -135,6 +132,13 @@ public final class SignalProtos {
               sessionStructure_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -152,6 +156,7 @@ public final class SignalProtos {
       return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_SignalMessage_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_SignalMessage_fieldAccessorTable
@@ -236,6 +241,7 @@ public final class SignalProtos {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -245,6 +251,7 @@ public final class SignalProtos {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -265,6 +272,7 @@ public final class SignalProtos {
       unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -295,7 +303,6 @@ public final class SignalProtos {
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -438,6 +445,7 @@ public final class SignalProtos {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -445,6 +453,7 @@ public final class SignalProtos {
     public static Builder newBuilder(org.whispersystems.libsignal.protocol.SignalProtos.SignalMessage prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -468,6 +477,7 @@ public final class SignalProtos {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_SignalMessage_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_SignalMessage_fieldAccessorTable
@@ -490,6 +500,7 @@ public final class SignalProtos {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         ratchetKey_ = com.google.protobuf.ByteString.EMPTY;
@@ -505,15 +516,18 @@ public final class SignalProtos {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_SignalMessage_descriptor;
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.SignalMessage getDefaultInstanceForType() {
         return org.whispersystems.libsignal.protocol.SignalProtos.SignalMessage.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.SignalMessage build() {
         org.whispersystems.libsignal.protocol.SignalProtos.SignalMessage result = buildPartial();
         if (!result.isInitialized()) {
@@ -522,6 +536,7 @@ public final class SignalProtos {
         return result;
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.SignalMessage buildPartial() {
         org.whispersystems.libsignal.protocol.SignalProtos.SignalMessage result = new org.whispersystems.libsignal.protocol.SignalProtos.SignalMessage(this);
         int from_bitField0_ = bitField0_;
@@ -551,32 +566,39 @@ public final class SignalProtos {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
         return (Builder) super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
+          int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.whispersystems.libsignal.protocol.SignalProtos.SignalMessage) {
           return mergeFrom((org.whispersystems.libsignal.protocol.SignalProtos.SignalMessage)other);
@@ -608,10 +630,12 @@ public final class SignalProtos {
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -799,11 +823,13 @@ public final class SignalProtos {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -825,11 +851,12 @@ public final class SignalProtos {
 
     @java.lang.Deprecated public static final com.google.protobuf.Parser<SignalMessage>
         PARSER = new com.google.protobuf.AbstractParser<SignalMessage>() {
+      @java.lang.Override
       public SignalMessage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new SignalMessage(input, extensionRegistry);
+        return new SignalMessage(input, extensionRegistry);
       }
     };
 
@@ -842,6 +869,7 @@ public final class SignalProtos {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.whispersystems.libsignal.protocol.SignalProtos.SignalMessage getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -921,6 +949,7 @@ public final class SignalProtos {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:textsecure.PreKeySignalMessage)
       PreKeySignalMessageOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use PreKeySignalMessage.newBuilder() to construct.
     private PreKeySignalMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -944,6 +973,9 @@ public final class SignalProtos {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -955,13 +987,6 @@ public final class SignalProtos {
             case 0:
               done = true;
               break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
             case 8: {
               bitField0_ |= 0x00000002;
               preKeyId_ = input.readUInt32();
@@ -992,6 +1017,13 @@ public final class SignalProtos {
               signedPreKeyId_ = input.readUInt32();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1009,6 +1041,7 @@ public final class SignalProtos {
       return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_PreKeySignalMessage_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_PreKeySignalMessage_fieldAccessorTable
@@ -1116,6 +1149,7 @@ public final class SignalProtos {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -1125,6 +1159,7 @@ public final class SignalProtos {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
@@ -1148,6 +1183,7 @@ public final class SignalProtos {
       unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -1182,7 +1218,6 @@ public final class SignalProtos {
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -1334,6 +1369,7 @@ public final class SignalProtos {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -1341,6 +1377,7 @@ public final class SignalProtos {
     public static Builder newBuilder(org.whispersystems.libsignal.protocol.SignalProtos.PreKeySignalMessage prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -1364,6 +1401,7 @@ public final class SignalProtos {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_PreKeySignalMessage_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_PreKeySignalMessage_fieldAccessorTable
@@ -1386,6 +1424,7 @@ public final class SignalProtos {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         registrationId_ = 0;
@@ -1403,15 +1442,18 @@ public final class SignalProtos {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_PreKeySignalMessage_descriptor;
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.PreKeySignalMessage getDefaultInstanceForType() {
         return org.whispersystems.libsignal.protocol.SignalProtos.PreKeySignalMessage.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.PreKeySignalMessage build() {
         org.whispersystems.libsignal.protocol.SignalProtos.PreKeySignalMessage result = buildPartial();
         if (!result.isInitialized()) {
@@ -1420,6 +1462,7 @@ public final class SignalProtos {
         return result;
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.PreKeySignalMessage buildPartial() {
         org.whispersystems.libsignal.protocol.SignalProtos.PreKeySignalMessage result = new org.whispersystems.libsignal.protocol.SignalProtos.PreKeySignalMessage(this);
         int from_bitField0_ = bitField0_;
@@ -1453,32 +1496,39 @@ public final class SignalProtos {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
         return (Builder) super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
+          int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.whispersystems.libsignal.protocol.SignalProtos.PreKeySignalMessage) {
           return mergeFrom((org.whispersystems.libsignal.protocol.SignalProtos.PreKeySignalMessage)other);
@@ -1513,10 +1563,12 @@ public final class SignalProtos {
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1752,11 +1804,13 @@ public final class SignalProtos {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -1778,11 +1832,12 @@ public final class SignalProtos {
 
     @java.lang.Deprecated public static final com.google.protobuf.Parser<PreKeySignalMessage>
         PARSER = new com.google.protobuf.AbstractParser<PreKeySignalMessage>() {
+      @java.lang.Override
       public PreKeySignalMessage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new PreKeySignalMessage(input, extensionRegistry);
+        return new PreKeySignalMessage(input, extensionRegistry);
       }
     };
 
@@ -1795,6 +1850,7 @@ public final class SignalProtos {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.whispersystems.libsignal.protocol.SignalProtos.PreKeySignalMessage getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -1857,6 +1913,7 @@ public final class SignalProtos {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:textsecure.KeyExchangeMessage)
       KeyExchangeMessageOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use KeyExchangeMessage.newBuilder() to construct.
     private KeyExchangeMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -1879,6 +1936,9 @@ public final class SignalProtos {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -1890,13 +1950,6 @@ public final class SignalProtos {
             case 0:
               done = true;
               break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
             case 8: {
               bitField0_ |= 0x00000001;
               id_ = input.readUInt32();
@@ -1922,6 +1975,13 @@ public final class SignalProtos {
               baseKeySignature_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1939,6 +1999,7 @@ public final class SignalProtos {
       return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_KeyExchangeMessage_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_KeyExchangeMessage_fieldAccessorTable
@@ -2023,6 +2084,7 @@ public final class SignalProtos {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -2032,6 +2094,7 @@ public final class SignalProtos {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -2052,6 +2115,7 @@ public final class SignalProtos {
       unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -2082,7 +2146,6 @@ public final class SignalProtos {
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -2225,6 +2288,7 @@ public final class SignalProtos {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -2232,6 +2296,7 @@ public final class SignalProtos {
     public static Builder newBuilder(org.whispersystems.libsignal.protocol.SignalProtos.KeyExchangeMessage prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -2255,6 +2320,7 @@ public final class SignalProtos {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_KeyExchangeMessage_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_KeyExchangeMessage_fieldAccessorTable
@@ -2277,6 +2343,7 @@ public final class SignalProtos {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         id_ = 0;
@@ -2292,15 +2359,18 @@ public final class SignalProtos {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_KeyExchangeMessage_descriptor;
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.KeyExchangeMessage getDefaultInstanceForType() {
         return org.whispersystems.libsignal.protocol.SignalProtos.KeyExchangeMessage.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.KeyExchangeMessage build() {
         org.whispersystems.libsignal.protocol.SignalProtos.KeyExchangeMessage result = buildPartial();
         if (!result.isInitialized()) {
@@ -2309,6 +2379,7 @@ public final class SignalProtos {
         return result;
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.KeyExchangeMessage buildPartial() {
         org.whispersystems.libsignal.protocol.SignalProtos.KeyExchangeMessage result = new org.whispersystems.libsignal.protocol.SignalProtos.KeyExchangeMessage(this);
         int from_bitField0_ = bitField0_;
@@ -2338,32 +2409,39 @@ public final class SignalProtos {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
         return (Builder) super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
+          int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.whispersystems.libsignal.protocol.SignalProtos.KeyExchangeMessage) {
           return mergeFrom((org.whispersystems.libsignal.protocol.SignalProtos.KeyExchangeMessage)other);
@@ -2395,10 +2473,12 @@ public final class SignalProtos {
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -2589,11 +2669,13 @@ public final class SignalProtos {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -2615,11 +2697,12 @@ public final class SignalProtos {
 
     @java.lang.Deprecated public static final com.google.protobuf.Parser<KeyExchangeMessage>
         PARSER = new com.google.protobuf.AbstractParser<KeyExchangeMessage>() {
+      @java.lang.Override
       public KeyExchangeMessage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new KeyExchangeMessage(input, extensionRegistry);
+        return new KeyExchangeMessage(input, extensionRegistry);
       }
     };
 
@@ -2632,6 +2715,7 @@ public final class SignalProtos {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.whispersystems.libsignal.protocol.SignalProtos.KeyExchangeMessage getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -2676,6 +2760,7 @@ public final class SignalProtos {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:textsecure.SenderKeyMessage)
       SenderKeyMessageOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use SenderKeyMessage.newBuilder() to construct.
     private SenderKeyMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -2696,6 +2781,9 @@ public final class SignalProtos {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -2707,13 +2795,6 @@ public final class SignalProtos {
             case 0:
               done = true;
               break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
             case 8: {
               bitField0_ |= 0x00000001;
               id_ = input.readUInt32();
@@ -2727,6 +2808,13 @@ public final class SignalProtos {
             case 26: {
               bitField0_ |= 0x00000004;
               ciphertext_ = input.readBytes();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
               break;
             }
           }
@@ -2746,6 +2834,7 @@ public final class SignalProtos {
       return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_SenderKeyMessage_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_SenderKeyMessage_fieldAccessorTable
@@ -2800,6 +2889,7 @@ public final class SignalProtos {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -2809,6 +2899,7 @@ public final class SignalProtos {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -2823,6 +2914,7 @@ public final class SignalProtos {
       unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -2845,7 +2937,6 @@ public final class SignalProtos {
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -2970,6 +3061,7 @@ public final class SignalProtos {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -2977,6 +3069,7 @@ public final class SignalProtos {
     public static Builder newBuilder(org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyMessage prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -3000,6 +3093,7 @@ public final class SignalProtos {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_SenderKeyMessage_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_SenderKeyMessage_fieldAccessorTable
@@ -3022,6 +3116,7 @@ public final class SignalProtos {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         id_ = 0;
@@ -3033,15 +3128,18 @@ public final class SignalProtos {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_SenderKeyMessage_descriptor;
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyMessage getDefaultInstanceForType() {
         return org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyMessage.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyMessage build() {
         org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyMessage result = buildPartial();
         if (!result.isInitialized()) {
@@ -3050,6 +3148,7 @@ public final class SignalProtos {
         return result;
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyMessage buildPartial() {
         org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyMessage result = new org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyMessage(this);
         int from_bitField0_ = bitField0_;
@@ -3071,32 +3170,39 @@ public final class SignalProtos {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
         return (Builder) super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
+          int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyMessage) {
           return mergeFrom((org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyMessage)other);
@@ -3122,10 +3228,12 @@ public final class SignalProtos {
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -3243,11 +3351,13 @@ public final class SignalProtos {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -3269,11 +3379,12 @@ public final class SignalProtos {
 
     @java.lang.Deprecated public static final com.google.protobuf.Parser<SenderKeyMessage>
         PARSER = new com.google.protobuf.AbstractParser<SenderKeyMessage>() {
+      @java.lang.Override
       public SenderKeyMessage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new SenderKeyMessage(input, extensionRegistry);
+        return new SenderKeyMessage(input, extensionRegistry);
       }
     };
 
@@ -3286,6 +3397,7 @@ public final class SignalProtos {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyMessage getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -3339,6 +3451,7 @@ public final class SignalProtos {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:textsecure.SenderKeyDistributionMessage)
       SenderKeyDistributionMessageOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use SenderKeyDistributionMessage.newBuilder() to construct.
     private SenderKeyDistributionMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -3360,6 +3473,9 @@ public final class SignalProtos {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -3371,13 +3487,6 @@ public final class SignalProtos {
             case 0:
               done = true;
               break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
             case 8: {
               bitField0_ |= 0x00000001;
               id_ = input.readUInt32();
@@ -3398,6 +3507,13 @@ public final class SignalProtos {
               signingKey_ = input.readBytes();
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -3415,6 +3531,7 @@ public final class SignalProtos {
       return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_SenderKeyDistributionMessage_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_SenderKeyDistributionMessage_fieldAccessorTable
@@ -3484,6 +3601,7 @@ public final class SignalProtos {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -3493,6 +3611,7 @@ public final class SignalProtos {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -3510,6 +3629,7 @@ public final class SignalProtos {
       unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -3536,7 +3656,6 @@ public final class SignalProtos {
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -3670,6 +3789,7 @@ public final class SignalProtos {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -3677,6 +3797,7 @@ public final class SignalProtos {
     public static Builder newBuilder(org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyDistributionMessage prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -3700,6 +3821,7 @@ public final class SignalProtos {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_SenderKeyDistributionMessage_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_SenderKeyDistributionMessage_fieldAccessorTable
@@ -3722,6 +3844,7 @@ public final class SignalProtos {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         id_ = 0;
@@ -3735,15 +3858,18 @@ public final class SignalProtos {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_SenderKeyDistributionMessage_descriptor;
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyDistributionMessage getDefaultInstanceForType() {
         return org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyDistributionMessage.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyDistributionMessage build() {
         org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyDistributionMessage result = buildPartial();
         if (!result.isInitialized()) {
@@ -3752,6 +3878,7 @@ public final class SignalProtos {
         return result;
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyDistributionMessage buildPartial() {
         org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyDistributionMessage result = new org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyDistributionMessage(this);
         int from_bitField0_ = bitField0_;
@@ -3777,32 +3904,39 @@ public final class SignalProtos {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
         return (Builder) super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
+          int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyDistributionMessage) {
           return mergeFrom((org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyDistributionMessage)other);
@@ -3831,10 +3965,12 @@ public final class SignalProtos {
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -3987,11 +4123,13 @@ public final class SignalProtos {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -4013,11 +4151,12 @@ public final class SignalProtos {
 
     @java.lang.Deprecated public static final com.google.protobuf.Parser<SenderKeyDistributionMessage>
         PARSER = new com.google.protobuf.AbstractParser<SenderKeyDistributionMessage>() {
+      @java.lang.Override
       public SenderKeyDistributionMessage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new SenderKeyDistributionMessage(input, extensionRegistry);
+        return new SenderKeyDistributionMessage(input, extensionRegistry);
       }
     };
 
@@ -4030,6 +4169,7 @@ public final class SignalProtos {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.whispersystems.libsignal.protocol.SignalProtos.SenderKeyDistributionMessage getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -4065,6 +4205,7 @@ public final class SignalProtos {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:textsecure.DeviceConsistencyCodeMessage)
       DeviceConsistencyCodeMessageOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use DeviceConsistencyCodeMessage.newBuilder() to construct.
     private DeviceConsistencyCodeMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -4084,6 +4225,9 @@ public final class SignalProtos {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -4095,13 +4239,6 @@ public final class SignalProtos {
             case 0:
               done = true;
               break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
             case 8: {
               bitField0_ |= 0x00000001;
               generation_ = input.readUInt32();
@@ -4110,6 +4247,13 @@ public final class SignalProtos {
             case 18: {
               bitField0_ |= 0x00000002;
               signature_ = input.readBytes();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
               break;
             }
           }
@@ -4129,6 +4273,7 @@ public final class SignalProtos {
       return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_DeviceConsistencyCodeMessage_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_DeviceConsistencyCodeMessage_fieldAccessorTable
@@ -4168,6 +4313,7 @@ public final class SignalProtos {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -4177,6 +4323,7 @@ public final class SignalProtos {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -4188,6 +4335,7 @@ public final class SignalProtos {
       unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -4206,7 +4354,6 @@ public final class SignalProtos {
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -4322,6 +4469,7 @@ public final class SignalProtos {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -4329,6 +4477,7 @@ public final class SignalProtos {
     public static Builder newBuilder(org.whispersystems.libsignal.protocol.SignalProtos.DeviceConsistencyCodeMessage prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -4352,6 +4501,7 @@ public final class SignalProtos {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_DeviceConsistencyCodeMessage_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_DeviceConsistencyCodeMessage_fieldAccessorTable
@@ -4374,6 +4524,7 @@ public final class SignalProtos {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         generation_ = 0;
@@ -4383,15 +4534,18 @@ public final class SignalProtos {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_DeviceConsistencyCodeMessage_descriptor;
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.DeviceConsistencyCodeMessage getDefaultInstanceForType() {
         return org.whispersystems.libsignal.protocol.SignalProtos.DeviceConsistencyCodeMessage.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.DeviceConsistencyCodeMessage build() {
         org.whispersystems.libsignal.protocol.SignalProtos.DeviceConsistencyCodeMessage result = buildPartial();
         if (!result.isInitialized()) {
@@ -4400,6 +4554,7 @@ public final class SignalProtos {
         return result;
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.DeviceConsistencyCodeMessage buildPartial() {
         org.whispersystems.libsignal.protocol.SignalProtos.DeviceConsistencyCodeMessage result = new org.whispersystems.libsignal.protocol.SignalProtos.DeviceConsistencyCodeMessage(this);
         int from_bitField0_ = bitField0_;
@@ -4417,32 +4572,39 @@ public final class SignalProtos {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
         return (Builder) super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
+          int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.whispersystems.libsignal.protocol.SignalProtos.DeviceConsistencyCodeMessage) {
           return mergeFrom((org.whispersystems.libsignal.protocol.SignalProtos.DeviceConsistencyCodeMessage)other);
@@ -4465,10 +4627,12 @@ public final class SignalProtos {
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -4554,11 +4718,13 @@ public final class SignalProtos {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -4580,11 +4746,12 @@ public final class SignalProtos {
 
     @java.lang.Deprecated public static final com.google.protobuf.Parser<DeviceConsistencyCodeMessage>
         PARSER = new com.google.protobuf.AbstractParser<DeviceConsistencyCodeMessage>() {
+      @java.lang.Override
       public DeviceConsistencyCodeMessage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new DeviceConsistencyCodeMessage(input, extensionRegistry);
+        return new DeviceConsistencyCodeMessage(input, extensionRegistry);
       }
     };
 
@@ -4597,6 +4764,7 @@ public final class SignalProtos {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.whispersystems.libsignal.protocol.SignalProtos.DeviceConsistencyCodeMessage getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -4694,6 +4862,7 @@ public final class SignalProtos {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:textsecure.RatchetedDynamicMulticastMessage)
       RatchetedDynamicMulticastMessageOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use RatchetedDynamicMulticastMessage.newBuilder() to construct.
     private RatchetedDynamicMulticastMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -4718,6 +4887,9 @@ public final class SignalProtos {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -4729,15 +4901,9 @@ public final class SignalProtos {
             case 0:
               done = true;
               break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
             case 8: {
               int rawValue = input.readEnum();
+                @SuppressWarnings("deprecation")
               org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage.Action value = org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage.Action.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(1, rawValue);
@@ -4787,6 +4953,13 @@ public final class SignalProtos {
               rDMEncryptedAddStructure_.add(input.readBytes());
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -4813,6 +4986,7 @@ public final class SignalProtos {
       return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_RatchetedDynamicMulticastMessage_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_RatchetedDynamicMulticastMessage_fieldAccessorTable
@@ -4950,6 +5124,7 @@ public final class SignalProtos {
      * <code>optional .textsecure.RatchetedDynamicMulticastMessage.Action action = 1;</code>
      */
     public org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage.Action getAction() {
+      @SuppressWarnings("deprecation")
       org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage.Action result = org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage.Action.valueOf(action_);
       return result == null ? org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage.Action.JOIN : result;
     }
@@ -5093,6 +5268,7 @@ public final class SignalProtos {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -5102,6 +5278,7 @@ public final class SignalProtos {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -5128,6 +5305,7 @@ public final class SignalProtos {
       unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -5180,7 +5358,6 @@ public final class SignalProtos {
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -5331,6 +5508,7 @@ public final class SignalProtos {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -5338,6 +5516,7 @@ public final class SignalProtos {
     public static Builder newBuilder(org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -5361,6 +5540,7 @@ public final class SignalProtos {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_RatchetedDynamicMulticastMessage_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_RatchetedDynamicMulticastMessage_fieldAccessorTable
@@ -5383,6 +5563,7 @@ public final class SignalProtos {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         action_ = 0;
@@ -5402,15 +5583,18 @@ public final class SignalProtos {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.whispersystems.libsignal.protocol.SignalProtos.internal_static_textsecure_RatchetedDynamicMulticastMessage_descriptor;
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage getDefaultInstanceForType() {
         return org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage build() {
         org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage result = buildPartial();
         if (!result.isInitialized()) {
@@ -5419,6 +5603,7 @@ public final class SignalProtos {
         return result;
       }
 
+      @java.lang.Override
       public org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage buildPartial() {
         org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage result = new org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage(this);
         int from_bitField0_ = bitField0_;
@@ -5459,32 +5644,39 @@ public final class SignalProtos {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
         return (Builder) super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
+          int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage) {
           return mergeFrom((org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage)other);
@@ -5545,10 +5737,12 @@ public final class SignalProtos {
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -5579,6 +5773,7 @@ public final class SignalProtos {
        * <code>optional .textsecure.RatchetedDynamicMulticastMessage.Action action = 1;</code>
        */
       public org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage.Action getAction() {
+        @SuppressWarnings("deprecation")
         org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage.Action result = org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage.Action.valueOf(action_);
         return result == null ? org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage.Action.JOIN : result;
       }
@@ -5962,11 +6157,13 @@ public final class SignalProtos {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -5988,11 +6185,12 @@ public final class SignalProtos {
 
     @java.lang.Deprecated public static final com.google.protobuf.Parser<RatchetedDynamicMulticastMessage>
         PARSER = new com.google.protobuf.AbstractParser<RatchetedDynamicMulticastMessage>() {
+      @java.lang.Override
       public RatchetedDynamicMulticastMessage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new RatchetedDynamicMulticastMessage(input, extensionRegistry);
+        return new RatchetedDynamicMulticastMessage(input, extensionRegistry);
       }
     };
 
@@ -6005,6 +6203,7 @@ public final class SignalProtos {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.whispersystems.libsignal.protocol.SignalProtos.RatchetedDynamicMulticastMessage getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -6064,7 +6263,7 @@ public final class SignalProtos {
       "PreKeyId\030\006 \001(\r\022\017\n\007baseKey\030\002 \001(\014\022\023\n\013ident" +
       "ityKey\030\003 \001(\014\022\017\n\007message\030\004 \001(\014\"t\n\022KeyExch" +
       "angeMessage\022\n\n\002id\030\001 \001(\r\022\017\n\007baseKey\030\002 \001(\014" +
-      "\022\022\n\nratchetKey\030\003 \001(\014\022\023\n\013identityKey\030\004 \001(",
+      "\022\022\n\nratchetKey\030\003 \001(\014\022\023\n\013identityKey\030\004 \001(" +
       "\014\022\030\n\020baseKeySignature\030\005 \001(\014\"E\n\020SenderKey" +
       "Message\022\n\n\002id\030\001 \001(\r\022\021\n\titeration\030\002 \001(\r\022\022" +
       "\n\nciphertext\030\003 \001(\014\"c\n\034SenderKeyDistribut" +
@@ -6074,7 +6273,7 @@ public final class SignalProtos {
       "ation\030\001 \001(\r\022\021\n\tsignature\030\002 \001(\014\"\225\002\n Ratch" +
       "etedDynamicMulticastMessage\022C\n\006action\030\001 " +
       "\001(\01623.textsecure.RatchetedDynamicMultica" +
-      "stMessage.Action\022\014\n\004wrap\030\002 \003(\014\022\016\n\006cipher",
+      "stMessage.Action\022\014\n\004wrap\030\002 \003(\014\022\016\n\006cipher" +
       "\030\003 \001(\014\022\021\n\tpublicKey\030\004 \003(\014\022\014\n\004name\030\005 \001(\t\022" +
       "\013\n\003TTL\030\006 \001(\r\022 \n\030RDMEncryptedAddStructure" +
       "\030\007 \003(\014\">\n\006Action\022\010\n\004JOIN\020\000\022\007\n\003ADD\020\001\022\n\n\006R" +

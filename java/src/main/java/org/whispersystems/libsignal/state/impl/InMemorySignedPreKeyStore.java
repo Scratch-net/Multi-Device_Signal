@@ -7,12 +7,17 @@ package org.whispersystems.libsignal.state.impl;
 
 import com.google.protobuf.ByteString;
 
+import org.whispersystems.libsignal.InvalidKeyException;
 import org.whispersystems.libsignal.InvalidKeyIdException;
+import org.whispersystems.libsignal.ecc.Curve;
+import org.whispersystems.libsignal.ecc.ECKeyPair;
+import org.whispersystems.libsignal.ecc.ECPrivateKey;
 import org.whispersystems.libsignal.state.SignedPreKeyRecord;
 import org.whispersystems.libsignal.state.SignedPreKeyStore;
 import org.whispersystems.libsignal.state.StorageProtos;
 
 import java.io.IOException;
+import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -83,6 +88,20 @@ public class InMemorySignedPreKeyStore implements SignedPreKeyStore {
             }
         }
         return allRecords;
+    }
+
+    @Override
+    public void resetSignedPreKeys(ECPrivateKey pk) {
+        for (Integer i : store.keySet()) {
+            ECKeyPair alicePreKey   = Curve.generateKeyPair();
+            try {
+                byte[] aliceSignature = Curve.calculateSignature(pk, alicePreKey.getPublicKey().serialize());
+                SignedPreKeyRecord signedPreKeyRecord = new SignedPreKeyRecord(i, System.currentTimeMillis(), alicePreKey, aliceSignature);
+                store.put(i, signedPreKeyRecord.serialize());
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 

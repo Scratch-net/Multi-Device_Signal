@@ -124,10 +124,19 @@ message RatchetDynamicMulticastMessageStructure {
 }
 
 message RatchetDynamicMulticastMessageRevokeStructure {
-     optional bytes secretRatchetKey                    = 1;
+     optional bytes session                              = 1;
+     optional bytes devicePublicKey                      = 2;
+     optional bytes ownIdentityKeyPair                   = 3;
+     repeated SignedPreKeyRecordStructure signed_prekeys = 4;
+     repeated PreKeyRecordStructure prekeys              = 5;
 }
 
+//message RatchetDynamicMulticastTagStructure {
+//    optional bytes macKey                      = 1;
+//    repeated bytes allEphemeralPublicKey       = 2;
+//}
 
+//en fait pourrait se servir du EncStructure.
 message RatchetDynamicMulticastAddStructure {
     optional bytes macKey                      = 1;
     optional bytes tag                         = 2;

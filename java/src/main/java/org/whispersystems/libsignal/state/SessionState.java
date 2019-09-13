@@ -313,6 +313,27 @@ public class SessionState {
         return null;
     }
 
+    public Pair<Integer, Integer> getReceiverChainPosition(ECPublicKey senderEphemeral) {
+        List<Chain> receiverChains = sessionStructure.getReceiverChainsList();
+        int index = 0;
+
+        for (Chain receiverChain : receiverChains) {
+            try {
+                ECPublicKey chainSenderRatchetKey = Curve.decodePoint(receiverChain.getSenderRatchetKey().toByteArray(), 0);
+
+                if (chainSenderRatchetKey.equals(senderEphemeral)) {
+                    return new Pair<>(index, receiverChains.size());
+                }
+            } catch (InvalidKeyException e) {
+                Log.w("SessionRecordV2", e);
+            }
+
+            index++;
+        }
+
+        return null;
+    }
+
     public ChainKey getReceiverChainKey(ECPublicKey senderEphemeral) {
         Pair<Chain, Integer> receiverChainAndIndex = getReceiverChain(senderEphemeral);
         Chain receiverChain = receiverChainAndIndex.first();

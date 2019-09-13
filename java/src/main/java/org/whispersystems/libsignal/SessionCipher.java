@@ -115,7 +115,7 @@ public class SessionCipher {
             }
 
             sessionState.setSenderChainKey(chainKey.getNextChainKey());
-
+//            System.out.println("fin encrypt, chain key index = "+ sessionState.getSenderChainKey().getIndex());
 
             if (!identityKeyStore.isTrustedIdentity(remoteAddress, sessionState.getRemoteIdentityKey(), IdentityKeyStore.Direction.SENDING)) {
                 throw new UntrustedIdentityException(remoteAddress.getName(), sessionState.getRemoteIdentityKey());
@@ -278,7 +278,6 @@ public class SessionCipher {
                     e.printStackTrace();
                 }
             }
-//            System.out.println(exceptions);
             throw new InvalidMessageException("No valid sessions.", exceptions);
         }
     }
@@ -368,20 +367,18 @@ public class SessionCipher {
         return new java.lang.String(hexChars);
     }
 
-    public void half_ratchet() throws InvalidKeyException, InvalidMessageException, DuplicateMessageException {
+    public void half_ratchet() throws InvalidKeyException, InvalidMessageException {
         SessionRecord sessionRecord = sessionStore.loadSession(remoteAddress);
         SessionState sessionState = sessionRecord.getSessionState();
         getOrCreateChainKey(sessionState);
         sessionState.getLatestReceiverRatchetKey();
         int ratchetCounter = sessionState.getRatchetCounter();
-
         sessionState.setRatchetCounter(ratchetCounter+1);
         sessionStore.storeSession(remoteAddress, sessionRecord);
-
     }
 
 
-    //Decrypt2 updates only the receiver chain
+    //ajout Celine. Decrypt qui ne fait que l'update de la receiver chain
     private byte[] decrypt2(SessionState sessionState, SignalMessage ciphertextMessage)
             throws InvalidMessageException, DuplicateMessageException, LegacyMessageException {
         if (!sessionState.hasSenderChain()) {
@@ -411,7 +408,7 @@ public class SessionCipher {
         return plaintext;
     }
 
-    //encrypt that updates the sender chain
+    //encrypt qui fait l'update de la sender chain
     public CiphertextMessage encrypt2(byte[] paddedMessage) throws UntrustedIdentityException, InvalidMessageException, InvalidKeyException {
         synchronized (SESSION_LOCK) {
             SessionRecord sessionRecord = sessionStore.loadSession(remoteAddress);
@@ -419,6 +416,7 @@ public class SessionCipher {
             int ratchetCounter = sessionState.getRatchetCounter();
             ChainKey chainKey;
             if(ratchetCounter==0) {
+         //       System.out.println("passe dans condition encrypt");
                 chainKey = getOrCreateChainKey(sessionState);
                 //ratchetCounter++;
                 sessionState.setRatchetCounter(1);
@@ -426,7 +424,7 @@ public class SessionCipher {
             else{
                 chainKey = sessionState.getSenderChainKey();
             }
-
+      //      System.out.println("dans ecnrypt après if RatchetCounter: "+ sessionState.getRatchetCounter());
             MessageKeys messageKeys = chainKey.getMessageKeys();
             ECPublicKey senderEphemeral = sessionState.getSenderRatchetKey();
             int previousCounter = sessionState.getPreviousCounter();
@@ -450,7 +448,7 @@ public class SessionCipher {
             }
 
             sessionState.setSenderChainKey(chainKey.getNextChainKey());
-   
+      //      System.out.println("fin encrypt, chain key index = "+ sessionState.getSenderChainKey().getIndex());
 
             if (!identityKeyStore.isTrustedIdentity(remoteAddress, sessionState.getRemoteIdentityKey(), IdentityKeyStore.Direction.SENDING)) {
                 throw new UntrustedIdentityException(remoteAddress.getName(), sessionState.getRemoteIdentityKey());
@@ -462,16 +460,22 @@ public class SessionCipher {
         }
     }
 
-    
+    //ajout Celine 23 avril
+    //reprend le code de getOrCreateCHainKey mais supprime l'update de la senderChain
     /**
      *update only receiverChain (ratchet that does not need to generate new own ephemerals
      **/
     public ChainKey updateReceiverChain(SessionState sessionState, ECPublicKey theirEphemeral)
         throws InvalidMessageException {
-            try {
-                if (sessionState.hasReceiverChain(theirEphemeral)) {
+        try {
+            if (sessionState.hasReceiverChain(theirEphemeral)) {
+                Pair<Integer, Integer> receiverChainPosition = sessionState.getReceiverChainPosition(theirEphemeral);
+                if (  receiverChainPosition.first() ==  receiverChainPosition.second() - 1) {
                     return sessionState.getReceiverChainKey(theirEphemeral);
                 } else {
+                    throw new InvalidMessageException("You cant use old reveiced key");
+                }
+            } else {
                     RootKey rootKey = sessionState.getRootKey();
                     ECKeyPair ourEphemeral = sessionState.getSenderRatchetKeyPair();
                     Pair<RootKey, ChainKey> receiverChain = rootKey.createChain(theirEphemeral, ourEphemeral);

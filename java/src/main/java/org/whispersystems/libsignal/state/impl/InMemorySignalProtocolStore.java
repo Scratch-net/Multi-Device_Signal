@@ -8,19 +8,17 @@ package org.whispersystems.libsignal.state.impl;
 import com.google.protobuf.ByteString;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.jce.spec.IEKeySpec;
 import org.whispersystems.libsignal.SignalProtocolAddress;
 import org.whispersystems.libsignal.IdentityKey;
 import org.whispersystems.libsignal.IdentityKeyPair;
 import org.whispersystems.libsignal.InvalidKeyIdException;
+import org.whispersystems.libsignal.ecc.ECPrivateKey;
 import org.whispersystems.libsignal.state.SignalProtocolStore;
 import org.whispersystems.libsignal.state.PreKeyRecord;
 import org.whispersystems.libsignal.state.SessionRecord;
 import org.whispersystems.libsignal.state.SignedPreKeyRecord;
 import org.whispersystems.libsignal.state.StorageProtos;
 
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
 import java.util.List;
@@ -120,6 +118,16 @@ public class InMemorySignalProtocolStore implements SignalProtocolStore {
   }
 
   @Override
+  public void resetPreKey() {
+    preKeyStore.resetPreKey();
+  }
+
+  @Override
+  public List<StorageProtos.PreKeyRecordStructure> dumpPreKey() {
+    return preKeyStore.dumpPreKey();
+  }
+
+  @Override
   public SessionRecord loadSession(SignalProtocolAddress address) {
     return sessionStore.loadSession(address);
   }
@@ -180,6 +188,12 @@ public class InMemorySignalProtocolStore implements SignalProtocolStore {
   }
 
   @Override
+  public void resetSignedPreKeys(ECPrivateKey pk) {
+    signedPreKeyStore.resetSignedPreKeys(pk);
+  }
+
+
+  @Override
   public SignedPreKeyRecord loadSignedPreKey(int signedPreKeyId) throws InvalidKeyIdException {
     return signedPreKeyStore.loadSignedPreKey(signedPreKeyId);
   }
@@ -218,6 +232,17 @@ public class InMemorySignalProtocolStore implements SignalProtocolStore {
   public void addDeviceKey(PublicKey pk) {
     deviceStore.addDeviceKey(pk);
   }
+
+  @Override
+  public int getDeviceKeyIndex(PublicKey pk) {
+    return deviceStore.getDeviceKeyIndex(pk);
+  }
+
+  @Override
+  public void delDevicePublicKey(PublicKey pk) {
+      deviceStore.delDevicePublicKey(pk);
+  }
+
 
   @Override
   public List<ByteString> getDevicesPublicKeys() {

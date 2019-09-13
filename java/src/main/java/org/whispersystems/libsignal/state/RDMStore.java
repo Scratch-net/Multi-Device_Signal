@@ -18,5 +18,10 @@ public interface RDMStore extends SignalProtocolStore, DeviceKeyStore {
     public void decAdd(ArrayList<byte[]> messages);
     public byte[] dec(byte[] m);
     public ArrayList<byte[]> addjoin(PublicKey newDevicePublicKey);
+    public void  decRevoke(ArrayList<byte[]> messages);
+    public ArrayList<byte[]> revoke(PublicKey devicePublicKey);
+    public ArrayList<byte[]> enc_revoke_all(PublicKey devicePublicKey);
+    public byte[] enc_revoke(SignalProtocolAddress ad, PublicKey device2deletePublicKey);
+
 
 }

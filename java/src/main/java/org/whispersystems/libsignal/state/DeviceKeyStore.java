@@ -16,4 +16,7 @@ public interface DeviceKeyStore {
 
     public List<ByteString> getDevicesPublicKeys();
 
+    int getDeviceKeyIndex(PublicKey pk);
+
+    void delDevicePublicKey(PublicKey pk);
 }

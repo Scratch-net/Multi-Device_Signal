@@ -4,9 +4,7 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.whispersystems.libsignal.IdentityKey;
-import org.whispersystems.libsignal.IdentityKeyPair;
-import org.whispersystems.libsignal.SignalProtocolAddress;
+import org.whispersystems.libsignal.*;
 import org.whispersystems.libsignal.ecc.Curve;
 import org.whispersystems.libsignal.ecc.ECKeyPair;
 import org.whispersystems.libsignal.ecc.ECPrivateKey;
@@ -20,6 +18,7 @@ import org.whispersystems.libsignal.util.Pair;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.*;
+import java.security.InvalidKeyException;
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -161,6 +160,60 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
             msg = SignalProtos.RatchetedDynamicMulticastMessage.newBuilder().setCipher(ByteString.copyFrom(cipher_rdm))
                     .setName(ad.getName())
                     .setAction(SignalProtos.RatchetedDynamicMulticastMessage.Action.ENC_JOIN)
+                    .addAllWrap(aes_wrap)
+                    .addAllPublicKey(allEphemeralPublicKeyList)
+                    .build();
+
+            return msg.toByteArray();
+        } catch (IOException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | BadPaddingException | InvalidKeySpecException | IllegalBlockSizeException | NoSuchProviderException | InvalidAlgorithmParameterException e1) {
+            e1.printStackTrace();
+        }
+
+        return new byte[0];
+    }
+
+
+
+    public byte[] enc_revoke(SignalProtocolAddress ad, PublicKey device2deletePublicKey) {
+        try {
+            SessionRecord sr = loadSession(ad);
+            SessionRecord sessionRecord = new SessionRecord(sr.serialize());
+            EphemaralUpdater ephemaralUpdater = new EphemaralUpdater(ad, sessionRecord).invoke();
+            byte[] newMacKey = ephemaralUpdater.getNewMacKey();
+            List<ByteString> allEphemeralPublicKeyList = ephemaralUpdater.getAllEphemeralPublicKeyList();
+            byte[] tag = ephemaralUpdater.getTag();
+
+
+            sessionRecord.signalFilterAllStates();
+            StorageProtos.RatchetDynamicMulticastMessageRevokeStructure enc_revoke;
+            enc_revoke = StorageProtos.RatchetDynamicMulticastMessageRevokeStructure.newBuilder()
+                    .setSession(ByteString.copyFrom(sessionRecord.serialize()))
+                    .setDevicePublicKey(ByteString.copyFrom(device2deletePublicKey.getEncoded()))
+                    .addAllSignedPrekeys(this.dumpSignedPreKey())
+                    .addAllPrekeys(this.dumpPreKey())
+                    .build();
+
+
+            // build RDM enc message
+            //       sessionRecord.signalFilterAllStates();
+            StorageProtos.RatchetDynamicMulticastEncStructure rdmm;
+            rdmm = StorageProtos.RatchetDynamicMulticastEncStructure.newBuilder()
+                    .setRevokeMessage(enc_revoke)
+                    .setMacKey(ByteString.copyFrom(newMacKey))
+                    .setTag(ByteString.copyFrom(tag))
+                    .build();
+
+            // wrap aes with all pub key
+            SecretKey aeskey = KeyGenerator.getInstance("AES").generateKey();
+            List<ByteString> aes_wrap = getAESWrapList(sr, aeskey);
+            // cipher rdm message
+            Cipher cipher = Cipher.getInstance("AES");  //FIXME use AES/ECB/PKCS5Padding ?
+            cipher.init(Cipher.ENCRYPT_MODE, aeskey);
+            byte[] cipher_rdm = cipher.doFinal(rdmm.toByteArray());
+            SignalProtos.RatchetedDynamicMulticastMessage msg;
+            msg = SignalProtos.RatchetedDynamicMulticastMessage.newBuilder().setCipher(ByteString.copyFrom(cipher_rdm))
+                    .setName(ad.getName())
+                    .setAction(SignalProtos.RatchetedDynamicMulticastMessage.Action.REVOKE)
                     .addAllWrap(aes_wrap)
                     .addAllPublicKey(allEphemeralPublicKeyList)
                     .build();
@@ -316,6 +369,7 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
         try {
             SessionRecord sr = loadSession(ad);
             SessionRecord sessionRecord = new SessionRecord(sr.serialize());
+            System.out.println("Size : " + sessionRecord.getSessionState().getAllEphemeralPublicKey().size());
             EphemaralUpdater ephemaralUpdater = new EphemaralUpdater(ad, sessionRecord).invoke();
             byte[] newMacKey = ephemaralUpdater.getNewMacKey();
             List<ByteString> allEphemeralPublicKeyList = ephemaralUpdater.getAllEphemeralPublicKeyList();
@@ -377,7 +431,7 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
                     byte[] bytes = decrypt(msg, sessionRecord);
                     StorageProtos.RatchetDynamicMulticastAddStructure rdmm;
                     rdmm = StorageProtos.RatchetDynamicMulticastAddStructure.parseFrom(bytes);
-                   
+                    //recupère le tag
                     byte[] tag = rdmm.getTag().toByteArray();
                     //get newMAcKey
                     ByteString new_mac_key = rdmm.getMacKey();
@@ -390,6 +444,102 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
             }
         }
     }
+
+
+    public void decRevoke(ArrayList<byte[]> messages) {
+        decAdd(messages);
+        for (byte[] m : messages) {
+            SignalProtos.RatchetedDynamicMulticastMessage msg = null;
+            try {
+                msg = SignalProtos.RatchetedDynamicMulticastMessage.parseFrom(m);
+            } catch (InvalidProtocolBufferException e) {
+                e.printStackTrace();
+            }
+            SignalProtocolAddress ad = new SignalProtocolAddress(msg.getName(), 1);
+            if (msg.getAction() == SignalProtos.RatchetedDynamicMulticastMessage.Action.REVOKE) {
+                try {
+                    SessionRecord sessionRecord = loadSession(ad);
+                    byte[] bytes = decrypt(msg, sessionRecord);
+                    StorageProtos.RatchetDynamicMulticastEncStructure rdmm;
+                    rdmm = StorageProtos.RatchetDynamicMulticastEncStructure.parseFrom(bytes);
+                    //recupère le tag
+                    byte[] tag = rdmm.getTag().toByteArray();
+                    //get newMAcKey
+                    ByteString new_mac_key = rdmm.getMacKey();
+                    verifyMac(msg, sessionRecord, tag, new_mac_key);
+                    StorageProtos.RatchetDynamicMulticastMessageRevokeStructure revokeMessage = rdmm.getRevokeMessage();
+
+                    ByteString session = revokeMessage.getSession();
+                    SessionRecord record = new SessionRecord(session.toByteArray());
+                    record.getSessionState().setRatchetDynamicMulticastStructure(sessionRecord.getSessionState().getRatchetDynamicMulticastStructure());
+                    storeSession(ad, record);
+
+                    ByteString devicePublicKey = revokeMessage.getDevicePublicKey();
+                    X509EncodedKeySpec ePubKeySpec = new X509EncodedKeySpec(devicePublicKey.toByteArray());
+                    KeyFactory keyFactory = KeyFactory.getInstance("EC", BouncyCastleProvider.PROVIDER_NAME);
+                    PublicKey ec_key = keyFactory.generatePublic(ePubKeySpec);
+                    this.delDevicePublicKey(ec_key);
+
+                    for(StorageProtos.SignedPreKeyRecordStructure e: revokeMessage.getSignedPrekeysList()){
+                        ECPublicKey publicKey = Curve.decodePoint(e.getPublicKey().toByteArray(), 0);
+                        ECPrivateKey privateKey = Curve.decodePrivatePoint(e.getPrivateKey().toByteArray());
+                        ECKeyPair ecKeyPair = new ECKeyPair(publicKey, privateKey);
+                        SignedPreKeyRecord spks = new SignedPreKeyRecord(e.getId(), e.getTimestamp(), ecKeyPair, e.getSignature().toByteArray());
+                        this.storeSignedPreKey(e.getId(), spks);
+                    }
+
+                    for(StorageProtos.PreKeyRecordStructure e: revokeMessage.getPrekeysList()){
+                        ECPublicKey publicKey = Curve.decodePoint(e.getPublicKey().toByteArray(), 0);
+                        ECPrivateKey privateKey = Curve.decodePrivatePoint(e.getPrivateKey().toByteArray());
+                        ECKeyPair ecKeyPair = new ECKeyPair(publicKey, privateKey);
+                        this.storePreKey(e.getId(), new PreKeyRecord(e.getId(), ecKeyPair));
+                    };
+
+
+                } catch (NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | InvalidKeyException | InvalidKeySpecException | IOException | BadPaddingException | NoSuchProviderException | org.whispersystems.libsignal.InvalidKeyException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public ArrayList<byte[]> revoke(PublicKey devicePublicKey) {
+        // reset Signal pre and users keys
+        ECKeyPair identityKeyPairKeys = Curve.generateKeyPair();
+        IdentityKeyPair identityKeyPair = new IdentityKeyPair(new IdentityKey(identityKeyPairKeys.getPublicKey()), identityKeyPairKeys.getPrivateKey());
+        setIdentityKeyPair(identityKeyPair);
+        resetSignedPreKeys(identityKeyPair.getPrivateKey());
+        resetPreKey();
+
+        // remove device key from allEphemeralKeys
+        int deviceKeyIndex = getDeviceKeyIndex(devicePublicKey);
+        ArrayList<byte[]> messages = new ArrayList<byte[]>();
+        for (SignalProtocolAddress ad : getAllSessions().keySet()) {
+            SessionRecord sessionRecord = loadSession(ad);
+            SessionState sessionState = sessionRecord.getSessionState();
+            StorageProtos.SessionStructure.RatchetDynamicMulticastStructure rdms = sessionState.getRatchetDynamicMulticastStructure();
+            List<ByteString> allEphemeralPublicKeyList = rdms.getAllEphemeralPublicKeyList();
+            ArrayList<ByteString> byteStrings = new ArrayList<>(allEphemeralPublicKeyList);
+            byteStrings.remove(deviceKeyIndex);
+            StorageProtos.SessionStructure.RatchetDynamicMulticastStructure rdms2 = rdms.toBuilder().clearAllEphemeralPublicKey().addAllAllEphemeralPublicKey(byteStrings).build();
+            sessionState.setRatchetDynamicMulticastStructure(rdms2);
+            sessionRecord.setState(sessionState);
+            storeSession(ad, sessionRecord);
+            byte[] msg = add(ad, byteStrings);
+            messages.add(msg);
+        }
+        return messages;
+    }
+
+    public ArrayList<byte[]> enc_revoke_all(PublicKey devicePublicKey){
+        ArrayList<byte[]> messages = new ArrayList<byte[]>();
+        for (SignalProtocolAddress ad : getAllSessions().keySet()) {
+            byte[] rev = enc_revoke(ad, devicePublicKey);
+            messages.add(rev);
+        }
+        delDevicePublicKey(devicePublicKey);
+        return messages;
+     }
 
     private byte[] decrypt(SignalProtos.RatchetedDynamicMulticastMessage msg, SessionRecord sessionRecord) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, NoSuchProviderException {
         ByteString ownEphemeralSecretKey = sessionRecord.getSessionState().getOwnEphemeralSecretKey();
@@ -425,17 +575,17 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
         SignalProtocolAddress ad = new SignalProtocolAddress(msg.getName(), 1);
         if (msg.getAction() == SignalProtos.RatchetedDynamicMulticastMessage.Action.ENC) {
             try {
-                //get session data
+                //recupere les infos de session
                 SessionRecord sessionRecord = loadSession(ad);
                 byte[] bytes = decrypt(msg, sessionRecord);
                 StorageProtos.RatchetDynamicMulticastEncStructure rdmm;
                 rdmm = StorageProtos.RatchetDynamicMulticastEncStructure.parseFrom(bytes);
-                //get tag
+                //recupère le tag
                 byte[] tag = rdmm.getTag().toByteArray();
                 ByteString new_mac_key = rdmm.getMacKey();
                 verifyMac(msg, sessionRecord, tag, new_mac_key);
 
-                //get ratchet keys
+                //recupère les ratchet key public et privées
                 StorageProtos.RatchetDynamicMulticastMessageStructure message;
                 message = rdmm.getMessage();
 
@@ -447,7 +597,7 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
                 boolean equalsPriv = Arrays.equals(secSigEphemeral.toByteArray(), sessionRecord.getSessionState().getLatestRatchetKeyPrivate());
                 boolean equalsPub = ourNewSigEphemeralPublic.equals(sessionRecord.getSessionState().getSenderRatchetKey());
 
-
+                //recompose une KeyPair
                 ECKeyPair ourNewSigEphemeralKeyPair = new ECKeyPair(ourNewSigEphemeralPublic, ourNewSigEphemeralPrivate);
                 if (!equalsPriv || !equalsPub) {
                     RootKey rootKey = sessionRecord.getSessionState().getRootKey();//FIXME recuperer aussi cle publique
@@ -459,12 +609,14 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
                     sessionRecord.getSessionState().setSenderChain(ourNewSigEphemeralKeyPair, chain.second());
                     sessionRecord.getSessionState().setRatchetCounter(currentState.getRatchetCounter() + 1);
                 }
-                
+                //ajout Celine
+                //fait même maj des chain key/message key que celui qui fait le encrypt Signal
+//                System.out.println("deb dec2, chainkey index =" +  sessionRecord.getSessionState().getSenderChainKey().getIndex());
                 ChainKey chainKey = sessionRecord.getSessionState().getSenderChainKey();
-//                sessionRecord.getSessionState().setSenderChainKey(chainKey.getNextChainKey());
-                sessionRecord.getSessionState().setSenderChainKey(chainKey.getNextChainKey());
-//              
-            
+//                sessionRecord.getSessionState().setSenderChainKey(chainKey.getNextChainKey());//FIXME c'est la le pb, n'enregistre pas l'avancée de l'index des chain key!
+                sessionRecord.getSessionState().setSenderChainKey(chainKey.getNextChainKey());//FIXME c'est la le pb, n'enregistre pas l'avancée de l'index des chain key!
+//                 System.out.println("fin dec2, chainkey index =" +  sessionRecord.getSessionState().getSenderChainKey().getIndex());
+                //fin ajout Céline
 
                 storeSession(ad, sessionRecord);
 
@@ -479,9 +631,9 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
 
     private void verifyMac(SignalProtos.RatchetedDynamicMulticastMessage msg, SessionRecord sessionRecord, byte[] tag, ByteString new_mac_key) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
         SecretKeySpec new_mac_key_practical = new SecretKeySpec(new_mac_key.toByteArray(), "HmacSHA256");
-        
+        //recupère la liste de clés ephémères
         List<ByteString> allEphemeralPublicKey = msg.getPublicKeyList();
-       
+        //verifie le tag
         byte[] macKey = sessionRecord.getSessionState().getMacKey();
         Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
         SecretKeySpec practicalMacKey = new SecretKeySpec(macKey, "HmacSHA256");
@@ -513,7 +665,7 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
                 SessionRecord sessionRecord = new SessionRecord(bytes);
                 List<ByteString> allEphemeralPublicKey = sessionRecord.getSessionState().getAllEphemeralPublicKey();
                 allEphemeralPublicKey.add(ByteString.copyFrom(newDevicePublicKey.getEncoded()));
-                if (getDevicesPublicKeys().size() > 0) {
+                if (getDevicesPublicKeys().size() > 0) {//FIXME initialiser le DevicesPublicKeys avec la clé du device et passer le compteur à 1
                     byte[] msg = add(ad, allEphemeralPublicKey);
                     messages.add(msg);
                 }
@@ -568,9 +720,9 @@ public class InMemoryRDMStore extends InMemorySignalProtocolStore implements RDM
             ByteString prik = ByteString.copyFrom(ephemeralRDMKeyPair.getPrivate().getEncoded());
             // remove previous ephemeral public key from all devices public key list
             allEphemeralPublicKeyList = new ArrayList<>(rdms.getAllEphemeralPublicKeyList());
-            allEphemeralPublicKeyList.remove(rdms.getOwnEphemeralPublicKey());
+            int ephpk_index = allEphemeralPublicKeyList.indexOf(rdms.getOwnEphemeralPublicKey());
             // add new one in device public key
-            allEphemeralPublicKeyList.add(pubk);
+            allEphemeralPublicKeyList.set(ephpk_index, pubk);
             // update RDM structure in session state
             StorageProtos.SessionStructure.RatchetDynamicMulticastStructure new_rmds;
             new_rmds = rdms.toBuilder().setMacKey(ByteString.copyFrom(newMacKey))

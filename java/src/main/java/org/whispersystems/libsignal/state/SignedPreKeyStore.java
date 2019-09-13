@@ -6,6 +6,7 @@
 package org.whispersystems.libsignal.state;
 
 import org.whispersystems.libsignal.InvalidKeyIdException;
+import org.whispersystems.libsignal.ecc.ECPrivateKey;
 
 import java.util.List;
 
@@ -51,4 +52,7 @@ public interface SignedPreKeyStore {
 
 
   public List<StorageProtos.SignedPreKeyRecordStructure> dumpSignedPreKey();
+
+
+  public void resetSignedPreKeys(ECPrivateKey pk);
 }

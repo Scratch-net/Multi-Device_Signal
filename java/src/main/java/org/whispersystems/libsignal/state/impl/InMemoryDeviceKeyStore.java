@@ -7,16 +7,13 @@ import org.whispersystems.libsignal.state.DeviceKeyStore;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class InMemoryDeviceKeyStore implements DeviceKeyStore {
 
     private PublicKey publicKey;
     private PrivateKey privateKey;
-    private Set<PublicKey> allDevicesKeys = new HashSet<PublicKey>();
+    private LinkedHashSet<PublicKey> allDevicesKeys = new LinkedHashSet<PublicKey>();
 
 
     public InMemoryDeviceKeyStore(KeyPair keyPair) {
@@ -43,6 +40,24 @@ public class InMemoryDeviceKeyStore implements DeviceKeyStore {
                 keys.add(ByteString.copyFrom(pk.getEncoded()));
         }
         return keys;
+    }
+
+    @Override
+    public int getDeviceKeyIndex(PublicKey pk) {
+        int i = 1; // own key must accounted
+        for (PublicKey p: allDevicesKeys) {
+            if (p.equals(pk)) {
+                return i;
+            } else {
+                i++;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public void delDevicePublicKey(PublicKey pk) {
+        allDevicesKeys.remove(pk);
     }
 
     public void addDeviceKey(PublicKey pk){

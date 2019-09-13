@@ -7,6 +7,8 @@ package org.whispersystems.libsignal.state;
 
 import org.whispersystems.libsignal.InvalidKeyIdException;
 
+import java.util.List;
+
 /**
  * An interface describing the local storage of {@link PreKeyRecord}s.
  *
@@ -43,5 +45,9 @@ public interface PreKeyStore {
    * @param preKeyId The ID of the PreKeyRecord to remove.
    */
   public void         removePreKey(int preKeyId);
+
+  public void resetPreKey();
+
+  public List<StorageProtos.PreKeyRecordStructure> dumpPreKey();
 
 }
